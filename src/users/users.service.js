@@ -9,7 +9,7 @@ const createUser = async (createUserDto) => {
         const user = await prisma.user.create({
             data: {
                 ...createUserDto,
-                role: Roles.user
+                role: Roles.user,
             }
         });
 
