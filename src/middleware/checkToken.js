@@ -7,13 +7,9 @@ const checkToken = async (req, res, next) => {
     let jwtToken = req.cookies['jwttoken'];
     const refreshToken = req.cookies['refreshtoken'];
 
-    if (refreshToken)
-        verifyJwtToken(refreshToken);
-
     if (jwtToken) {
         await verifyJwtToken(jwtToken);
         next();
-
     }
     else if (refreshToken) {
 
