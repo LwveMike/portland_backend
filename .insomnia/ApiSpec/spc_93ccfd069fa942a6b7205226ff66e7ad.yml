@@ -1,0 +1,147 @@
+_id: spc_93ccfd069fa942a6b7205226ff66e7ad
+type: ApiSpec
+parentId: wrk_700349c500d042d69bbaa6b71e168e15
+modified: 1644935757960
+created: 1644933552259
+fileName: portland-backend.yaml
+contents: "  openapi : 3.0.3
+
+  \  info:
+
+  \    title: 'Portland REST Api'
+
+  \    description: 'Portland Backend'
+
+  \    version: '0.1.0'
+
+  \  externalDocs:\ 
+
+  \    description: 'idk another doc'
+
+  \    url: 'https://github.com/LwveMike/portland_backend'
+
+  \  paths:\ 
+
+  \    /products:
+
+  \      get:
+
+  \        tags: ['products']
+
+  \        summary: Returns all products
+
+  \        responses:
+
+  \          \"200\":
+
+  \            description: all product are returned
+
+  \            content:\ 
+
+  \              application/json:
+
+  \                schema:
+
+  \                  $ref: \"#/components/schemas/product\"
+
+  \           \ 
+
+  \  servers:
+
+  \  - url: http://localhost:3000
+
+  \    description: Local Server
+
+  \ \ 
+
+
+  \  components:
+
+  \    schemas:
+
+  \      product:
+
+  \        type: object
+
+  \        properties:
+
+  \          id:
+
+  \            type: number
+
+  \            description: identification of product
+
+  \          name:
+
+  \            type: string
+
+  \            description: name of the product, should be unique
+
+  \          description:
+
+  \            type: string
+
+  \            description: the description of the product
+
+  \          url:\ 
+
+  \            type: string
+
+  \            description: the photo of the product
+
+  \          color:
+
+  \            type: string
+
+  \            description: color of the product
+
+  \          price:
+
+  \            type: number
+
+  \            description: product price
+
+  \          brand:
+
+  \            type: string
+
+  \            description: brand of product
+
+  \          category:
+
+  \            type: string
+
+  \            description: the category where product fits in
+
+  \          shipment:
+
+  \            type: number
+
+  \            description: price for the shipment
+
+  \          condition:
+
+  \            type: string
+
+  \            description: the condition of the product
+
+  \          discount:
+
+  \            type: number
+
+  \            description: the discount percentage of the product
+
+  \          hot:
+
+  \            type: boolean
+
+  \            description: popularity of a product
+
+  \          storage:
+
+  \            type: string
+
+  \            description: where is the product stored
+
+  \        "
+contentType: yaml
