@@ -61,6 +61,16 @@ const getOneUserById = async (paramId: string): Promise<User | null> => {
     } 
 }
 
+const getUserData = async(id: number): Promise<User> => {
+    const user = await prisma.user.findUnique({
+        where: {
+            id
+        }
+    })
+
+    return user as User;
+}
+
 const deleteOneUser = async (paramId: string): Promise<void> => {
 
     const id = parseInt(paramId);
@@ -94,5 +104,6 @@ export {
     getOneUserById,
     getAllUsers,
     deleteOneUser,
-    updateOneUser
+    updateOneUser,
+    getUserData,
 }

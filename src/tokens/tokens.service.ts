@@ -3,6 +3,8 @@ import jwt from 'jsonwebtoken';
 import ErrorMessage from "../globalTypes/Message";
 import CreateRefreshTokenDto from "./dto/createRefreshToken.dto";
 import JwtPayload from "./types/jwtPayload";
+import { getUserData } from "../users/users.module";
+import SendUserDto from "../users/dto/sendUser.dto";
 
 import { refreshSecret, refreshDuration, jwtSecret, jwtDuration } from "../envConfig";
 
@@ -108,6 +110,29 @@ const clearUnusedRefreshTokens = async (): Promise<void | ErrorMessage> => {
         }
 }
 
+const getUserDataFromToken = async (jwtToken: string): Promise<SendUserDto | ErrorMessage> => {
+    const decoded = jwt.verify(jwtToken, jwtSecret ) as JwtPayload;
+    const { id } = decoded;
+
+
+    try {
+        const user = await getUserData(id);
+    
+        const sendUserDto: SendUserDto = {
+            id: user.id,
+            username: user.username,
+            avatar: user.avatar
+        }
+    
+        return sendUserDto;
+    } catch(error) {
+        return {
+            message: `No user with id ${id}.`,
+            error
+        }
+    }
+}
+
 export {
     createRefreshToken,
     getAllRefreshTokens,
@@ -116,5 +141,6 @@ export {
     getAJwtToken,
     removeExpiredTokenFromDb,
     clearUnusedRefreshTokens,
-    verifyJwtToken
+    verifyJwtToken,
+    getUserDataFromToken
 }

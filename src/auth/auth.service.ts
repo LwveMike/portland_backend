@@ -18,7 +18,7 @@ const register = async (registerUserDto: RegisterUserDto, response: Response): P
             message: 'User already registered.'
         }
     } else {
-        const newUser = await createUser({ ...registerUserDto});
+        await createUser({ ...registerUserDto});
         await login(registerUserDto, response);
 
         return {
