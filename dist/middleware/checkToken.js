@@ -9,12 +9,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.checkToken = void 0;
 const tokens_module_1 = require("../tokens/tokens.module");
+const envConfig_1 = require("../envConfig");
 const checkToken = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const tokenMaxAge = new Date(Date.now() + parseInt(process.env.JWT_DURATION.slice(0, process.env.JWT_DURATION.length - 1)) * 1000);
-    let jwtToken = req.cookies['jwttoken'];
-    const refreshToken = req.cookies['refreshtoken'];
+    const tokenMaxAge = new Date(Date.now()
+        + parseInt(envConfig_1.jwtDuration.slice(0, envConfig_1.jwtDuration.length - 1), 10) * 1000);
+    let jwtToken = req.cookies.jwttoken;
+    const refreshToken = req.cookies.refreshtoken;
     if (jwtToken) {
         yield (0, tokens_module_1.verifyJwtToken)(jwtToken);
         next();
@@ -28,8 +29,8 @@ const checkToken = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
     }
     else {
         res.json({
-            message: "You are not logged in."
+            message: 'You are not logged in.',
         });
     }
 });
-exports.checkToken = checkToken;
+exports.default = checkToken;

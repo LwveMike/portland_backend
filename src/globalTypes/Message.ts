@@ -1,4 +1,5 @@
 export default class ErrorMessage {
   message: string;
-  error?:  any;
+
+  error?: any;
 }

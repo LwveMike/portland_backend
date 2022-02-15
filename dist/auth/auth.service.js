@@ -12,85 +12,54 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.login = exports.register = void 0;
-const tokens_service_1 = require("../tokens/tokens.service");
+exports.logout = exports.login = exports.register = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
+const tokens_service_1 = require("../tokens/tokens.service");
 const users_module_1 = require("../users/users.module");
-const register = (registerUserDto, response) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const user = yield (0, users_module_1.getOneUserByNameOrNull)(registerUserDto.username);
-        if (user) {
+const envConfig_1 = require("../envConfig");
+const login = (loginUserDto, response) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = yield (0, users_module_1.getOneUserByNameOrNull)(loginUserDto.username);
+    if (user) {
+        const res = yield bcrypt_1.default.compare(loginUserDto.password, user.password);
+        if (res) {
+            const refreshToken = yield (0, tokens_service_1.createRefreshToken)({ id: user.id, username: user.username });
+            const token = jsonwebtoken_1.default.sign({ id: user.id, username: user.username }, envConfig_1.jwtSecret, { expiresIn: envConfig_1.jwtDuration });
+            const tokenMaxAge = new Date(Date.now()
+                + parseInt(envConfig_1.jwtDuration.slice(0, envConfig_1.jwtDuration.length - 1), 10) * 1000);
+            const refreshMaxAge = new Date(Date.now()
+                + parseInt(envConfig_1.refreshDuration.slice(0, envConfig_1.refreshDuration.length - 1), 10) * 1000);
+            response.cookie('jwttoken', token, { expires: tokenMaxAge, httpOnly: true, sameSite: 'strict' });
+            response.cookie('refreshtoken', refreshToken.refresh_token, { expires: refreshMaxAge, httpOnly: true, sameSite: 'strict' });
             return {
-                message: 'Username already in use'
+                message: 'success login',
             };
         }
-        else {
-            const hashedPassword = yield bcrypt_1.default.hash(registerUserDto.password, 10);
-            const newUser = yield (0, users_module_1.createUser)(Object.assign(Object.assign({}, registerUserDto), { password: hashedPassword }));
-            try {
-                const res = yield bcrypt_1.default.compare(registerUserDto.password, newUser.password);
-                if (res) {
-                    yield login(newUser, response);
-                    return {
-                        message: 'success'
-                    };
-                }
-                return {
-                    message: 'bad password'
-                };
-            }
-            catch (error) {
-                return {
-                    message: 'Check Credentials',
-                    error
-                };
-            }
-        }
-    }
-    catch (error) {
         return {
-            message: "Registration failed",
-            error
+            message: "The passwords didn't match",
         };
     }
-});
-exports.register = register;
-const login = (loginUserDto, response) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const user = yield (0, users_module_1.getOneUserByNameOrNull)(loginUserDto.username);
-        if (user) {
-            try {
-                const res = yield bcrypt_1.default.compare(loginUserDto.password, user.password);
-                if (res) {
-                    const refreshToken = yield (0, tokens_service_1.createRefreshToken)({ id: user.id, username: user.username });
-                    const token = yield jsonwebtoken_1.default.sign({ id: user.id, username: user.username }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_DURATION });
-                    const tokenMaxAge = new Date(Date.now() + parseInt(process.env.JWT_DURATION.slice(0, process.env.JWT_DURATION.length - 1)) * 1000);
-                    const refreshMaxAge = new Date(Date.now() + parseInt(process.env.REFRESH_DURATION.slice(0, process.env.REFRESH_DURATION.length - 1)) * 1000);
-                    response.cookie('jwttoken', token, { expires: tokenMaxAge, httpOnly: true, sameSite: 'strict' });
-                    response.cookie('refreshtoken', refreshToken.refresh_token, { expires: refreshMaxAge, httpOnly: true, sameSite: 'strict' });
-                    return {
-                        token,
-                        refresh_token: refreshToken.refresh_token
-                    };
-                }
-            }
-            catch (error) {
-                return {
-                    message: 'Check Credentials',
-                    error
-                };
-            }
-        }
-        return {
-            message: `There is no user with username ${loginUserDto.username}`
-        };
-    }
-    catch (error) {
-        return {
-            message: "Login Failed",
-            error
-        };
-    }
+    return {
+        message: `There is no user with username ${loginUserDto.username}`,
+    };
 });
 exports.login = login;
+const register = (registerUserDto, response) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = yield (0, users_module_1.getOneUserByNameOrNull)(registerUserDto.username);
+    if (user) {
+        return {
+            message: 'User already registered.',
+        };
+    }
+    yield (0, users_module_1.createUser)(Object.assign({}, registerUserDto));
+    yield login(registerUserDto, response);
+    return {
+        message: 'User registered successfuly',
+    };
+});
+exports.register = register;
+const logout = (res) => __awaiter(void 0, void 0, void 0, function* () {
+    res.cookie('jwttoken', '', { expires: new Date(+0), httpOnly: true, sameSite: 'strict' });
+    res.cookie('refreshtoken', '', { expires: new Date(+0), httpOnly: true, sameSite: 'strict' });
+});
+exports.logout = logout;

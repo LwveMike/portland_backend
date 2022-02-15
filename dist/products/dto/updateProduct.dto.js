@@ -1,5 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-class updateProductDto {
+class UpdateProductDto {
 }
-exports.default = updateProductDto;
+exports.default = UpdateProductDto;

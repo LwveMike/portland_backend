@@ -1,5 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-class createProductDto {
+class CreateProductDto {
 }
-exports.default = createProductDto;
+exports.default = CreateProductDto;

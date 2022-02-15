@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start:dev": "nodemon ./src/main.ts",
-    "start": "tsc --project ./"
+    "start": "tsc --project ./",
+    "lint": "npx eslint . --ext .ts"
   },
   "keywords": [],
   "author": "",
@@ -22,7 +23,11 @@
     "http-status-codes": "^2.2.0",
     "jsonwebtoken": "^8.5.1",
     "morgan": "^1.10.0",
-    "prisma": "^3.9.1"
+    "prisma": "^3.9.1",
+    "swagger-jsdoc": "^6.1.0",
+    "swagger-ui-express": "^4.3.0",
+    "tsoa": "^3.14.1",
+    "winston": "^3.6.0"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
@@ -34,6 +39,18 @@
     "@types/jsonwebtoken": "^8.5.8",
     "@types/morgan": "^1.9.3",
     "@types/node": "^17.0.17",
+    "@types/swagger-jsdoc": "^6.0.1",
+    "@types/swagger-ui-express": "^4.1.3",
+    "@typescript-eslint/eslint-plugin": "^5.12.0",
+    "@typescript-eslint/parser": "^5.12.0",
+    "concurrently": "^7.0.0",
+    "eslint": "^8.9.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb-typescript": "^16.1.0",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-jsx-a11y": "^6.5.1",
+    "eslint-plugin-react": "^7.28.0",
+    "eslint-plugin-react-hooks": "^4.3.0",
     "nodemon": "^2.0.15",
     "ts-node": "^10.5.0",
     "ts-node-dev": "^1.1.8",
