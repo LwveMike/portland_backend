@@ -1,7 +1,7 @@
 _id: spc_93ccfd069fa942a6b7205226ff66e7ad
 type: ApiSpec
 parentId: wrk_700349c500d042d69bbaa6b71e168e15
-modified: 1644935757960
+modified: 1645000241245
 created: 1644933552259
 fileName: portland-backend.yaml
 contents: "  openapi : 3.0.3
@@ -16,7 +16,7 @@ contents: "  openapi : 3.0.3
 
   \  externalDocs:\ 
 
-  \    description: 'idk another doc'
+  \    description: 'Github Repository'
 
   \    url: 'https://github.com/LwveMike/portland_backend'
 
@@ -26,7 +26,9 @@ contents: "  openapi : 3.0.3
 
   \      get:
 
-  \        tags: ['products']
+  \        tags:\ 
+
+  \          - products
 
   \        summary: Returns all products
 
@@ -34,7 +36,7 @@ contents: "  openapi : 3.0.3
 
   \          \"200\":
 
-  \            description: all product are returned
+  \            description: return all products
 
   \            content:\ 
 
@@ -43,6 +45,582 @@ contents: "  openapi : 3.0.3
   \                schema:
 
   \                  $ref: \"#/components/schemas/product\"
+
+  \          \"204\":
+
+  \            description: return an error message \ 
+
+  \            content:
+
+  \              application/json:
+
+  \                schema:
+
+  \                  $ref: \"#/components/schemas/error-message\"
+
+  \                 \ 
+
+  \      post:
+
+  \        tags:
+
+  \          - products
+
+  \        summary: Creates a new product
+
+  \        requestBody:
+
+  \          description: all data about a product
+
+  \          required: true
+
+  \          content:
+
+  \            application/json:
+
+  \             schema:
+
+  \               $ref: \"#/components/schemas/create-product\"
+
+  \        responses:
+
+  \          \"201\":
+
+  \            description: creates and returns the new product
+
+  \            content:
+
+  \              application/json:
+
+  \                schema:
+
+  \                  $ref: \"#/components/schemas/product\"
+
+  \                 \ 
+
+  \          \"406\":
+
+  \            description: return an error message
+
+  \            content:
+
+  \              application/json:
+
+  \                schema:
+
+  \                  $ref: \"#/components/schemas/error-message\"
+
+  \                 \ 
+
+  \                 \ 
+
+  \                 \ 
+
+  \                 \ 
+
+  \       \ 
+
+  \         \ 
+
+  \                 \ 
+
+  \    /products/{id}:
+
+  \      get:
+
+  \        tags:\ 
+
+  \          - products
+
+  \        summary: Return a product
+
+  \        operationId: getProductbyId
+
+  \        parameters:\ 
+
+  \          - name: id
+
+  \            in: path
+
+  \            description: Product ID
+
+  \            required: true
+
+  \            schema:
+
+  \              type: string
+
+  \        responses:
+
+  \          \"200\":
+
+  \            description: return a product
+
+  \            content:\ 
+
+  \              application/json:
+
+  \                schema:
+
+  \                  $ref: \"#/components/schemas/product\"
+
+  \                 \ 
+
+  \          \"400\":
+
+  \            description: return an error message
+
+  \            content:\ 
+
+  \              application/json:
+
+  \                schema:
+
+  \                  $ref: \"#/components/schemas/error-message\"
+
+  \                 \ 
+
+  \      delete:
+
+  \        tags:\ 
+
+  \          - products
+
+  \        summary: Return a product
+
+  \        parameters:\ 
+
+  \          - name: id
+
+  \            in: path
+
+  \            description: Product ID
+
+  \            required: true
+
+  \            schema:
+
+  \              type: string
+
+  \        responses:
+
+  \          \"202\":
+
+  \            description: return an alert message
+
+  \            content:\ 
+
+  \              application/json:
+
+  \                schema:
+
+  \                  $ref: \"#/components/schemas/alert-message\"
+
+  \                 \ 
+
+  \          \"406\":
+
+  \            description: return an error message
+
+  \            content:\ 
+
+  \              application/json:
+
+  \                schema:
+
+  \                  $ref: \"#/components/schemas/error-message\"
+
+  \                 \ 
+
+  \      put:
+
+  \        tags:\ 
+
+  \          - products
+
+  \        summary: Update a product
+
+  \        requestBody:
+
+  \          description: all data about a product
+
+  \          required: true
+
+  \          content:
+
+  \            application/json:
+
+  \             schema:
+
+  \               $ref: \"#/components/schemas/update-product\"
+
+  \        parameters:\ 
+
+  \          - name: id
+
+  \            in: path
+
+  \            description: Product ID
+
+  \            required: true
+
+  \            schema:
+
+  \              type: string
+
+  \        responses:
+
+  \          \"200\":
+
+  \            description: update a product and then return it
+
+  \            content:\ 
+
+  \              application/json:
+
+  \                schema:
+
+  \                  $ref: \"#/components/schemas/product\"
+
+  \                 \ 
+
+  \          \"400\":
+
+  \            description: return an error message
+
+  \            content:\ 
+
+  \              application/json:
+
+  \                schema:
+
+  \                  $ref: \"#/components/schemas/error-message\"
+
+  \                 \ 
+
+  \                 \ 
+
+  \    /users/{id}:
+
+  \      delete:
+
+  \        tags:\ 
+
+  \          - users
+
+  \        summary: Delete a user
+
+  \        operationId: getUserById
+
+  \        parameters:\ 
+
+  \          - name: id
+
+  \            in: path
+
+  \            description: User ID
+
+  \            required: true
+
+  \            schema:
+
+  \              type: string
+
+  \        responses:
+
+  \          \"202\":
+
+  \            description: deletes a user
+
+  \            content:\ 
+
+  \              application/json:
+
+  \                schema:
+
+  \                  $ref: \"#/components/schemas/alert-message\"
+
+  \                 \ 
+
+  \          \"400\":
+
+  \            description: return an error message \ 
+
+  \            content:
+
+  \              application/json:
+
+  \                schema:
+
+  \                  $ref: \"#/components/schemas/error-message\"
+
+  \                 \ 
+
+  \      put:
+
+  \        tags:\ 
+
+  \          - users
+
+  \        summary: Updates a user
+
+  \        requestBody:
+
+  \          description: all data needed to update a user
+
+  \          required: true
+
+  \          content:
+
+  \            application/json:
+
+  \             schema:
+
+  \               $ref: \"#/components/schemas/update-user\"
+
+  \        parameters:\ 
+
+  \          - name: id
+
+  \            in: path
+
+  \            description: User ID
+
+  \            required: true
+
+  \            schema:
+
+  \              type: string
+
+  \        responses:
+
+  \          \"202\":
+
+  \            description: updates a user
+
+  \            content:\ 
+
+  \              application/json:
+
+  \                schema:
+
+  \                  $ref: \"#/components/schemas/user\"
+
+  \                 \ 
+
+  \          \"400\":
+
+  \            description: return an error message \ 
+
+  \            content:
+
+  \              application/json:
+
+  \                schema:
+
+  \                  $ref: \"#/components/schemas/error-message\"
+
+  \                 \ 
+
+  \    /tokens/clear:
+
+  \      get:
+
+  \        tags:\ 
+
+  \          - tokens
+
+  \        summary: Clear invalid refresh tokens from db
+
+  \        responses:
+
+  \          \"202\":
+
+  \            description: clear invalid refresh tokens
+
+  \            content:\ 
+
+  \              application/json:
+
+  \                schema:
+
+  \                  $ref: \"#/components/schemas/alert-message\"
+
+  \                 \ 
+
+  \                 \ 
+
+  \    /auth/register:
+
+  \      post:
+
+  \        tags:
+
+  \          - auth
+
+  \        summary: Registers a user
+
+  \        requestBody:
+
+  \          description: credentials needed to register
+
+  \          required: true
+
+  \          content:
+
+  \            application/json:
+
+  \             schema:
+
+  \               $ref: \"#/components/schemas/register-user\"
+
+  \              \ 
+
+  \        responses:
+
+  \          \"201\":
+
+  \            description: register a user and then set the cookies
+
+  \            content:
+
+  \              application/json:
+
+  \                schema:
+
+  \                  $ref: \"#/components/schemas/error-message\"
+
+  \                 \ 
+
+  \          \"409\":
+
+  \            description: user cant register
+
+  \            content:
+
+  \              application/json:
+
+  \                schema:
+
+  \                  $ref: \"#/components/schemas/error-message\"
+
+  \                 \ 
+
+  \                 \ 
+
+  \    /auth/login:
+
+  \      post:
+
+  \        tags:
+
+  \          - auth
+
+  \        summary: Login in a user
+
+  \        requestBody:
+
+  \          description: credentials needed to login
+
+  \          required: true
+
+  \          content:
+
+  \            application/json:
+
+  \             schema:
+
+  \               $ref: \"#/components/schemas/register-user\"
+
+  \              \ 
+
+  \        responses:
+
+  \          \"200\":
+
+  \            description: login in a user and then set the cookies
+
+  \            content:
+
+  \              application/json:
+
+  \                schema:
+
+  \                  $ref: \"#/components/schemas/error-message\"
+
+  \                 \ 
+
+  \          \"409\":
+
+  \            description: user cant login
+
+  \            content:
+
+  \              application/json:
+
+  \                schema:
+
+  \                  $ref: \"#/components/schemas/error-message\"
+
+  \                 \ 
+
+  \                 \ 
+
+  \    /auth/logout:
+
+  \      delete:
+
+  \        tags:
+
+  \          - auth
+
+  \        summary: Log out a user
+
+  \        responses:
+
+  \          \"200\":
+
+  \            description: user log out
+
+  \            content:
+
+  \              application/json:
+
+  \                schema:
+
+  \                  $ref: \"#/components/schemas/error-message\"
+
+  \                 \ 
+
+  \          \"409\":
+
+  \            description: user cant logout
+
+  \            content:
+
+  \              application/json:
+
+  \                schema:
+
+  \                  $ref: \"#/components/schemas/error-message\"
+
+  \     \ 
+
+  \     \ 
+
+  \                 \ 
+
+  \           \ 
+
+  \                 \ 
+
+  \     \ 
+
+  \                 \ 
+
+  \         \ 
+
+  \         \ 
 
   \           \ 
 
@@ -62,6 +640,34 @@ contents: "  openapi : 3.0.3
   \      product:
 
   \        type: object
+
+  \        required:
+
+  \          - id
+
+  \          - name
+
+  \          - description
+
+  \          - url
+
+  \          - color
+
+  \          - price
+
+  \          - brand
+
+  \          - category
+
+  \          - shipment
+
+  \          - condition
+
+  \          - discount
+
+  \          - hot
+
+  \          - storage
 
   \        properties:
 
@@ -142,6 +748,348 @@ contents: "  openapi : 3.0.3
   \            type: string
 
   \            description: where is the product stored
+
+  \           \ 
+
+  \      create-product:
+
+  \        type: object
+
+  \        required:
+
+  \          - name
+
+  \          - description
+
+  \          - url
+
+  \          - color
+
+  \          - price
+
+  \          - brand
+
+  \          - category
+
+  \          - shipment
+
+  \          - condition
+
+  \          - discount
+
+  \          - hot
+
+  \          - storage
+
+  \        properties:
+
+  \          name:
+
+  \            type: string
+
+  \            description: name of the product, should be unique
+
+  \          description:
+
+  \            type: string
+
+  \            description: the description of the product
+
+  \          url:\ 
+
+  \            type: string
+
+  \            description: the photo of the product
+
+  \          color:
+
+  \            type: string
+
+  \            description: color of the product
+
+  \          price:
+
+  \            type: number
+
+  \            description: product price
+
+  \          brand:
+
+  \            type: string
+
+  \            description: brand of product
+
+  \          category:
+
+  \            type: string
+
+  \            description: the category where product fits in
+
+  \          shipment:
+
+  \            type: number
+
+  \            description: price for the shipment
+
+  \          condition:
+
+  \            type: string
+
+  \            description: the condition of the product
+
+  \          discount:
+
+  \            type: number
+
+  \            description: the discount percentage of the product
+
+  \          hot:
+
+  \            type: boolean
+
+  \            description: popularity of a product
+
+  \          storage:
+
+  \            type: string
+
+  \            description: where is the product stored
+
+  \           \ 
+
+  \      update-product:
+
+  \        type: object
+
+  \        properties:
+
+  \          name:
+
+  \            type: string
+
+  \            description: name of the product, should be unique
+
+  \          description:
+
+  \            type: string
+
+  \            description: the description of the product
+
+  \          url:\ 
+
+  \            type: string
+
+  \            description: the photo of the product
+
+  \          color:
+
+  \            type: string
+
+  \            description: color of the product
+
+  \          price:
+
+  \            type: number
+
+  \            description: product price
+
+  \          brand:
+
+  \            type: string
+
+  \            description: brand of product
+
+  \          category:
+
+  \            type: string
+
+  \            description: the category where product fits in
+
+  \          shipment:
+
+  \            type: number
+
+  \            description: price for the shipment
+
+  \          condition:
+
+  \            type: string
+
+  \            description: the condition of the product
+
+  \          discount:
+
+  \            type: number
+
+  \            description: the discount percentage of the product
+
+  \          hot:
+
+  \            type: boolean
+
+  \            description: popularity of a product
+
+  \          storage:
+
+  \            type: string
+
+  \            description: where is the product stored
+
+  \           \ 
+
+  \      error-message:
+
+  \        type: object
+
+  \        required:
+
+  \          - message
+
+  \        properties:
+
+  \          message:
+
+  \            type: string
+
+  \            description: the message api wants us to see
+
+  \          error:\ 
+
+  \            type: object
+
+  \            description: the actual error thrown by the controller
+
+  \           \ 
+
+  \      alert-message:
+
+  \        type: object
+
+  \        required:\ 
+
+  \          - message
+
+  \        properties:
+
+  \          message:
+
+  \            type: string
+
+  \            description: the alert message
+
+  \           \ 
+
+  \      user:
+
+  \        type: object
+
+  \        required:
+
+  \          - id
+
+  \          - username
+
+  \          - password
+
+  \          - role
+
+  \          - avatar
+
+  \        properties:
+
+  \          id:\ 
+
+  \            type: number
+
+  \            description: the id of user
+
+  \          username:\ 
+
+  \            type: string
+
+  \            description: the username of user
+
+  \          password:\ 
+
+  \            type: string
+
+  \            description: the hashed password of the user
+
+  \          avatar:
+
+  \            type: string
+
+  \            description: the avatar of the user
+
+  \          role:
+
+  \            type: string
+
+  \            description: the role of the user
+
+  \           \ 
+
+  \      update-user:
+
+  \        type: object
+
+  \        properties:
+
+  \          username:\ 
+
+  \            type: string
+
+  \            description: the username of user
+
+  \          password:\ 
+
+  \            type: string
+
+  \            description: the hashed password of the user
+
+  \          avatar:
+
+  \            type: string
+
+  \            description: the avatar of the user
+
+  \           \ 
+
+  \           \ 
+
+  \      register-user:
+
+  \        type: object
+
+  \        required:
+
+  \          - username
+
+  \          - password
+
+  \        properties:
+
+  \          username:\ 
+
+  \            type: string
+
+  \            description: the username of user
+
+  \          password:\ 
+
+  \            type: string
+
+  \            description: the user password
+
+  \           \ 
+
+  \           \ 
+
+  \         \ 
+
+  \         \ 
+
+  \     \ 
 
   \        "
 contentType: yaml
