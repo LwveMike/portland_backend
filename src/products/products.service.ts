@@ -1,78 +1,69 @@
-import { PrismaClient } from "@prisma/client";
-import CreateProductDto from "./dto/createProduct.dto";
-import UpdateProductDto from "./dto/updateProduct.dto";
-import Product from "./types/Product";
+import { PrismaClient } from '@prisma/client';
+import CreateProductDto from './dto/createProduct.dto';
+import UpdateProductDto from './dto/updateProduct.dto';
+import Product from './types/Product';
 
 const prisma = new PrismaClient();
 
 const getAllProducts = async (): Promise<Product[] | any> => {
+  const products = await prisma.product.findMany();
 
-    const products = await prisma.product.findMany();
-
-    if(products)
-        return products;
-    else
-        return {
-            message: 'error query'
-        }
-
-}
+  if (products) return products;
+  return {
+    message: 'error query',
+  };
+};
 
 const createProduct = async (createProductDto: CreateProductDto): Promise<Product> => {
+  const product = await prisma.product.create({
+    data: createProductDto,
+  });
 
-        const product = await prisma.product.create({
-            data: createProductDto
-        })
-
-        return product;
-
-}
+  return product;
+};
 
 const getOneProductById = async (paramId: string): Promise<Product | null> => {
-    let id = parseInt(paramId);
+  const id = parseInt(paramId, 10);
 
-    const product = await prisma.product.findUnique({
-        where: {
-            id: id
-        }
-    })
+  const product = await prisma.product.findUnique({
+    where: {
+      id,
+    },
+  });
 
-    if(product)
-        return product;
-    return null;
-}
+  if (product) return product;
+  return null;
+};
 
 const deleteOneProduct = async (paramId: string): Promise<void> => {
+  const id = parseInt(paramId, 10);
 
-    let id = parseInt(paramId);
+  await prisma.product.delete({
+    where: {
+      id,
+    },
+  });
+};
 
-    await prisma.product.delete({
-        where: {
-            id: id
-        }
-    })
+const updateOneProduct = async (paramId: string, updateProductDto: UpdateProductDto)
+: Promise<Product | boolean> => {
+  const id = parseInt(paramId, 10);
 
-}
+  const product = await prisma.product.update({
+    where: {
+      id,
+    },
+    data: updateProductDto,
+  });
 
-const updateOneProduct = async (paramId: string, updateProductDto: UpdateProductDto): Promise<Product | void> => {
-    let id = parseInt(paramId);
-
-    const product = await prisma.product.update({
-        where: {
-            id
-        },
-        data: updateProductDto
-    })
-
-    if (product)
-        return product;
-        
-}
+  if (product) return product;
+  return false;
+};
 
 export {
-    getAllProducts,
-    createProduct,
-    getOneProductById,
-    deleteOneProduct,
-    updateOneProduct
-}
+  getAllProducts,
+  createProduct,
+  getOneProductById,
+  deleteOneProduct,
+  updateOneProduct,
+};

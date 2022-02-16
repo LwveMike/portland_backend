@@ -3,9 +3,9 @@ const refreshSecret = process.env.REFRESH_SECRET || 'default-refresh-secret';
 const jwtDuration = process.env.JWT_DURATION || '10s';
 const refreshDuration = process.env.REFRESH_DURATION || '30s';
 
-export {  
+export {
   jwtSecret,
   refreshSecret,
   jwtDuration,
-  refreshDuration
-}
+  refreshDuration,
+};

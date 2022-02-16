@@ -9,50 +9,56 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateOneProduct = exports.deleteOneProduct = exports.getOneProduct = exports.createProduct = exports.getAllProducts = void 0;
+exports.updateOneProduct = exports.deleteOneProduct = exports.getOneProductById = exports.createProduct = exports.getAllProducts = void 0;
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 const getAllProducts = () => __awaiter(void 0, void 0, void 0, function* () {
     const products = yield prisma.product.findMany();
-    return products;
+    if (products)
+        return products;
+    return {
+        message: 'error query',
+    };
 });
 exports.getAllProducts = getAllProducts;
 const createProduct = (createProductDto) => __awaiter(void 0, void 0, void 0, function* () {
     const product = yield prisma.product.create({
-        data: createProductDto
+        data: createProductDto,
     });
     return product;
 });
 exports.createProduct = createProduct;
-const getOneProduct = (paramId) => __awaiter(void 0, void 0, void 0, function* () {
-    let id = parseInt(paramId);
+const getOneProductById = (paramId) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = parseInt(paramId, 10);
     const product = yield prisma.product.findUnique({
         where: {
-            id: id
-        }
+            id,
+        },
     });
     if (product)
         return product;
+    return null;
 });
-exports.getOneProduct = getOneProduct;
+exports.getOneProductById = getOneProductById;
 const deleteOneProduct = (paramId) => __awaiter(void 0, void 0, void 0, function* () {
-    let id = parseInt(paramId);
-    const product = yield prisma.product.delete({
+    const id = parseInt(paramId, 10);
+    yield prisma.product.delete({
         where: {
-            id: id
-        }
+            id,
+        },
     });
 });
 exports.deleteOneProduct = deleteOneProduct;
 const updateOneProduct = (paramId, updateProductDto) => __awaiter(void 0, void 0, void 0, function* () {
-    let id = parseInt(paramId);
+    const id = parseInt(paramId, 10);
     const product = yield prisma.product.update({
         where: {
-            id
+            id,
         },
-        data: updateProductDto
+        data: updateProductDto,
     });
     if (product)
         return product;
+    return false;
 });
 exports.updateOneProduct = updateOneProduct;
