@@ -10,7 +10,7 @@ import LoginUserDto from './dto/loginUser.dto';
 import { jwtSecret, jwtDuration, refreshDuration } from '../envConfig';
 
 const login = async (loginUserDto: LoginUserDto, response: Response)
-: Promise<ErrorMessage | void> => {
+: Promise<any | ErrorMessage | void> => {
   const user = await getOneUserByNameOrNull(loginUserDto.username);
 
   if (user) {
@@ -32,7 +32,9 @@ const login = async (loginUserDto: LoginUserDto, response: Response)
       response.cookie('refreshtoken', refreshToken.refresh_token, { expires: refreshMaxAge, httpOnly: true, sameSite: 'strict' });
 
       return {
-        message: 'success login',
+        id: user.id,
+        username: user.username,
+        avatar: user.avatar,
       };
     }
     return {

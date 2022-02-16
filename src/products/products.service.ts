@@ -14,12 +14,26 @@ const getAllProducts = async (): Promise<Product[] | any> => {
   };
 };
 
-const createProduct = async (createProductDto: CreateProductDto): Promise<Product> => {
-  const product = await prisma.product.create({
-    data: createProductDto,
+const getProductByName = async (name: string): Promise<Product | null> => {
+  const product = await prisma.product.findUnique({
+    where: {
+      name,
+    },
   });
 
   return product;
+};
+
+const createProduct = async (createProductDto: CreateProductDto): Promise<Product | boolean> => {
+  if (await getProductByName(createProductDto.name) == null) {
+    const product = await prisma.product.create({
+      data: createProductDto,
+    });
+
+    return product;
+  }
+
+  return false;
 };
 
 const getOneProductById = async (paramId: string): Promise<Product | boolean> => {

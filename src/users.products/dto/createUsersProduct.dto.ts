@@ -1,4 +1,4 @@
-export default class CreateProductDto {
+export default class CreateUsersProductDto {
   name: string;
 
   description: string;
@@ -22,6 +22,4 @@ export default class CreateProductDto {
   hot: boolean;
 
   storage: string;
-
-  ownerId: number;
 }

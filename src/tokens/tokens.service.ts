@@ -27,15 +27,15 @@ const getAllRefreshTokens = async (): Promise<Tokens[]> => {
   return tokens;
 };
 
-const getOneRefreshTokenOrNull = async (token: Tokens): Promise<Tokens | null> => {
+const getOneRefreshTokenOrFalse = async (token: string): Promise<Tokens | boolean> => {
   const dbToken = await prisma.tokens.findFirst({
     where: {
-      id: token.id,
+      refresh_token: token,
     },
   });
 
-  if (dbToken) return dbToken;
-  return null;
+  if (dbToken != null) return dbToken;
+  return false;
 };
 
 const removeExpiredTokenFromDb = async (token: Tokens): Promise<boolean | void> => {
@@ -46,28 +46,28 @@ const removeExpiredTokenFromDb = async (token: Tokens): Promise<boolean | void> 
   });
 };
 
-const verifyRefreshToken = async (refreshToken: Tokens): Promise<boolean> => {
-  const dbToken = await getOneRefreshTokenOrNull(refreshToken);
+const verifyRefreshToken = async (refreshToken: string): Promise<boolean> => {
+  const dbToken = await getOneRefreshTokenOrFalse(refreshToken);
 
   if (dbToken) {
     try {
-      jwt.verify(refreshToken.refresh_token, refreshSecret);
+      jwt.verify(refreshToken, refreshSecret);
       return true;
     } catch (error) {
-      await removeExpiredTokenFromDb(dbToken);
+      await removeExpiredTokenFromDb(dbToken as Tokens);
       return false;
     }
   } else return false;
 };
 
-const getAJwtToken = async (refreshToken: Tokens): Promise<string | boolean> => {
+const getAJwtToken = async (refreshToken: string): Promise<string | boolean> => {
   const valid = await verifyRefreshToken(refreshToken);
 
   if (refreshToken && valid) {
     try {
-      const decoded = jwt.verify(refreshToken.refresh_token, refreshSecret) as JwtPayload;
+      const decoded = jwt.verify(refreshToken, refreshSecret) as JwtPayload;
       const { id, username } = decoded;
-      const jwtToken = await jwt.sign({ id, username }, jwtSecret, { expiresIn: jwtDuration });
+      const jwtToken = jwt.sign({ id, username }, jwtSecret, { expiresIn: jwtDuration });
 
       return jwtToken;
     } catch (error) {
@@ -78,7 +78,7 @@ const getAJwtToken = async (refreshToken: Tokens): Promise<string | boolean> => 
 
 const verifyJwtToken = async (token: string): Promise<boolean> => {
   try {
-    await jwt.verify(token, jwtSecret);
+    jwt.verify(token, jwtSecret);
 
     return true;
   } catch (error) {
@@ -90,7 +90,7 @@ const clearUnusedRefreshTokens = async (): Promise<void> => {
   const tokens = await getAllRefreshTokens();
 
   for (let i = 0; i < tokens.length; i += 1) {
-    verifyRefreshToken(tokens[i]);
+    verifyRefreshToken(tokens[i].refresh_token);
   }
 
   Promise.all(tokens);
@@ -126,7 +126,7 @@ export {
   createRefreshToken,
   getAllRefreshTokens,
   verifyRefreshToken,
-  getOneRefreshTokenOrNull,
+  getOneRefreshTokenOrFalse,
   getAJwtToken,
   removeExpiredTokenFromDb,
   clearUnusedRefreshTokens,
