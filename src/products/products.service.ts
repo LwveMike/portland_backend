@@ -22,41 +22,53 @@ const createProduct = async (createProductDto: CreateProductDto): Promise<Produc
   return product;
 };
 
-const getOneProductById = async (paramId: string): Promise<Product | null> => {
+const getOneProductById = async (paramId: string): Promise<Product | boolean> => {
   const id = parseInt(paramId, 10);
 
-  const product = await prisma.product.findUnique({
-    where: {
-      id,
-    },
-  });
+  if (!Number.isNaN(id)) {
+    const product = await prisma.product.findUnique({
+      where: {
+        id,
+      },
+    });
 
-  if (product) return product;
-  return null;
+    if (product != null) return product;
+  }
+
+  return false;
 };
 
-const deleteOneProduct = async (paramId: string): Promise<void> => {
+const deleteOneProduct = async (paramId: string): Promise<boolean> => {
   const id = parseInt(paramId, 10);
 
-  await prisma.product.delete({
-    where: {
-      id,
-    },
-  });
+  if (!Number.isNaN(id)) {
+    await prisma.product.delete({
+      where: {
+        id,
+      },
+    });
+
+    return true;
+  }
+
+  return false;
 };
 
 const updateOneProduct = async (paramId: string, updateProductDto: UpdateProductDto)
 : Promise<Product | boolean> => {
   const id = parseInt(paramId, 10);
 
-  const product = await prisma.product.update({
-    where: {
-      id,
-    },
-    data: updateProductDto,
-  });
+  if (!Number.isNaN(id)) {
+    const product = await prisma.product.update({
+      where: {
+        id,
+      },
+      data: updateProductDto,
+    });
 
-  if (product) return product;
+    if (product != null) return product;
+  }
+
   return false;
 };
 

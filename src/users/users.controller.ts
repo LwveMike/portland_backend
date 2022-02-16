@@ -10,14 +10,20 @@ usersController.delete('/:id', async (req: Request, res: Response): Promise<void
   const { id } = req.params;
 
   try {
-    await deleteOneUser(id);
+    const decision = await deleteOneUser(id);
 
-    res.status(StatusCodes.ACCEPTED).json({
-      message: `User with id ${id} was deleted successfuly.`,
-    });
+    if (decision) {
+      res.status(StatusCodes.ACCEPTED).json({
+        message: `User with id ${id} was deleted successfuly.`,
+      });
+    } else {
+      res.status(StatusCodes.BAD_REQUEST).json({
+        message: `Error couldn't delete user with id ${id}. The id should be a number or a string that can be parsed as number.`,
+      });
+    }
   } catch (error) {
-    res.status(StatusCodes.NO_CONTENT).json({
-      message: `Error couldn't delete user with id ${id}.`,
+    res.status(StatusCodes.BAD_REQUEST).json({
+      message: `Error couldn't delete user with id ${id}. The id should be a number or a string that can be parsed as number.`,
       error,
     });
   }
@@ -31,12 +37,12 @@ usersController.put('/:id', async (req: Request, res: Response): Promise<void> =
 
     if (user) res.status(StatusCodes.ACCEPTED).json(user);
     else {
-      res.status(StatusCodes.NO_CONTENT).json({
+      res.status(StatusCodes.BAD_REQUEST).json({
         message: `User with id ${id} couldn't be updated.`,
       });
     }
   } catch (error) {
-    res.status(StatusCodes.NO_CONTENT).json({
+    res.status(StatusCodes.BAD_REQUEST).json({
       message: `Error couldn't update user with id ${id}.`,
       error,
     });

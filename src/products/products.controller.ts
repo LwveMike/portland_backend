@@ -27,12 +27,12 @@ productsController.get('/:id', async (req: Request, res: Response): Promise<void
 
     if (product) res.status(StatusCodes.OK).json(product);
     else {
-      res.status(StatusCodes.NO_CONTENT).json({
-        message: `There is no product with id of ${id}`,
+      res.status(StatusCodes.BAD_REQUEST).json({
+        message: `There is no product with id of ${id}, or the id is not a number or a string that can be parsed as number`,
       });
     }
   } catch (error) {
-    res.status(StatusCodes.NO_CONTENT).json({
+    res.status(StatusCodes.BAD_REQUEST).json({
       message: `Couldn't retrieve the product with id ${id}.`,
       error,
     });
@@ -60,7 +60,7 @@ productsController.delete('/:id', async (req: Request, res: Response): Promise<v
       message: `The product with id ${id} was deleted successfuly.`,
     });
   } catch (error) {
-    res.status(StatusCodes.NO_CONTENT).json({
+    res.status(StatusCodes.BAD_REQUEST).json({
       message: 'Error while trying to delete product from DB.',
       error,
     });
@@ -75,12 +75,12 @@ productsController.put('/:id', async (req: Request, res: Response): Promise<void
 
     if (product) res.status(StatusCodes.OK).json(product);
     else {
-      res.status(StatusCodes.NO_CONTENT).json({
+      res.status(StatusCodes.BAD_REQUEST).json({
         message: `The product with id ${id} couldn't be updated.`,
       });
     }
   } catch (error) {
-    res.status(StatusCodes.NO_CONTENT).json({
+    res.status(StatusCodes.BAD_REQUEST).json({
       message: `Error while trying to update product with id ${id}.`,
       error,
     });

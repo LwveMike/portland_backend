@@ -65,28 +65,37 @@ const getUserData = async (id: number): Promise<User> => {
   return user as User;
 };
 
-const deleteOneUser = async (paramId: string): Promise<void> => {
+const deleteOneUser = async (paramId: string): Promise<boolean> => {
   const id = parseInt(paramId, 10);
 
-  await prisma.user.delete({
-    where: {
-      id,
-    },
-  });
+  if (!Number.isNaN(id)) {
+    await prisma.user.delete({
+      where: {
+        id,
+      },
+    });
+
+    return true;
+  }
+
+  return false;
 };
 
 const updateOneUser = async (paramId: string, updateUserDto: UpdateUserDto)
 : Promise<User | boolean> => {
   const id = parseInt(paramId, 10);
 
-  const user = await prisma.user.update({
-    where: {
-      id,
-    },
-    data: updateUserDto,
-  });
+  if (!Number.isNaN(id)) {
+    const user = await prisma.user.update({
+      where: {
+        id,
+      },
+      data: updateUserDto,
+    });
 
-  if (user) return user;
+    return user;
+  }
+
   return false;
 };
 

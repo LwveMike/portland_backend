@@ -21,6 +21,9 @@ model Product {
   discount    Int?    @default(0)
   hot         Boolean
   storage     String
+
+  owner   User @relation(fields: [ownerId], references: [id])
+  ownerId Int
 }
 
 model User {
@@ -29,6 +32,8 @@ model User {
   password String
   avatar   String @default("https://www.der-windows-papst.de/wp-content/uploads/2019/03/Windows-Change-Default-Avatar-448x400.png")
   role     Roles
+
+  products Product[]
 }
 
 model Tokens {
