@@ -1,7 +1,7 @@
 _id: spc_93ccfd069fa942a6b7205226ff66e7ad
 type: ApiSpec
 parentId: wrk_700349c500d042d69bbaa6b71e168e15
-modified: 1645000241245
+modified: 1645096186863
 created: 1644933552259
 fileName: portland-backend.yaml
 contents: "  openapi : 3.0.3
@@ -12,7 +12,7 @@ contents: "  openapi : 3.0.3
 
   \    description: 'Portland Backend'
 
-  \    version: '0.1.0'
+  \    version: '0.2.0'
 
   \  externalDocs:\ 
 
@@ -20,7 +20,7 @@ contents: "  openapi : 3.0.3
 
   \    url: 'https://github.com/LwveMike/portland_backend'
 
-  \  paths:\ 
+  \  paths:
 
   \    /products:
 
@@ -30,13 +30,14 @@ contents: "  openapi : 3.0.3
 
   \          - products
 
-  \        summary: Returns all products
+  \        summary: Returns all products, doesnt need authentication or role
+  of admin
 
   \        responses:
 
   \          \"200\":
 
-  \            description: return all products
+  \            description: Returns all products
 
   \            content:\ 
 
@@ -59,68 +60,6 @@ contents: "  openapi : 3.0.3
   \                  $ref: \"#/components/schemas/error-message\"
 
   \                 \ 
-
-  \      post:
-
-  \        tags:
-
-  \          - products
-
-  \        summary: Creates a new product
-
-  \        requestBody:
-
-  \          description: all data about a product
-
-  \          required: true
-
-  \          content:
-
-  \            application/json:
-
-  \             schema:
-
-  \               $ref: \"#/components/schemas/create-product\"
-
-  \        responses:
-
-  \          \"201\":
-
-  \            description: creates and returns the new product
-
-  \            content:
-
-  \              application/json:
-
-  \                schema:
-
-  \                  $ref: \"#/components/schemas/product\"
-
-  \                 \ 
-
-  \          \"406\":
-
-  \            description: return an error message
-
-  \            content:
-
-  \              application/json:
-
-  \                schema:
-
-  \                  $ref: \"#/components/schemas/error-message\"
-
-  \                 \ 
-
-  \                 \ 
-
-  \                 \ 
-
-  \                 \ 
-
-  \       \ 
-
-  \         \ 
 
   \                 \ 
 
@@ -180,124 +119,6 @@ contents: "  openapi : 3.0.3
 
   \                 \ 
 
-  \      delete:
-
-  \        tags:\ 
-
-  \          - products
-
-  \        summary: Return a product
-
-  \        parameters:\ 
-
-  \          - name: id
-
-  \            in: path
-
-  \            description: Product ID
-
-  \            required: true
-
-  \            schema:
-
-  \              type: string
-
-  \        responses:
-
-  \          \"202\":
-
-  \            description: return an alert message
-
-  \            content:\ 
-
-  \              application/json:
-
-  \                schema:
-
-  \                  $ref: \"#/components/schemas/alert-message\"
-
-  \                 \ 
-
-  \          \"406\":
-
-  \            description: return an error message
-
-  \            content:\ 
-
-  \              application/json:
-
-  \                schema:
-
-  \                  $ref: \"#/components/schemas/error-message\"
-
-  \                 \ 
-
-  \      put:
-
-  \        tags:\ 
-
-  \          - products
-
-  \        summary: Update a product
-
-  \        requestBody:
-
-  \          description: all data about a product
-
-  \          required: true
-
-  \          content:
-
-  \            application/json:
-
-  \             schema:
-
-  \               $ref: \"#/components/schemas/update-product\"
-
-  \        parameters:\ 
-
-  \          - name: id
-
-  \            in: path
-
-  \            description: Product ID
-
-  \            required: true
-
-  \            schema:
-
-  \              type: string
-
-  \        responses:
-
-  \          \"200\":
-
-  \            description: update a product and then return it
-
-  \            content:\ 
-
-  \              application/json:
-
-  \                schema:
-
-  \                  $ref: \"#/components/schemas/product\"
-
-  \                 \ 
-
-  \          \"400\":
-
-  \            description: return an error message
-
-  \            content:\ 
-
-  \              application/json:
-
-  \                schema:
-
-  \                  $ref: \"#/components/schemas/error-message\"
-
-  \                 \ 
-
   \                 \ 
 
   \    /users/{id}:
@@ -308,7 +129,8 @@ contents: "  openapi : 3.0.3
 
   \          - users
 
-  \        summary: Delete a user
+  \        summary: Deletes a user, require authentication and the role of
+  admin
 
   \        operationId: getUserById
 
@@ -362,7 +184,8 @@ contents: "  openapi : 3.0.3
 
   \          - users
 
-  \        summary: Updates a user
+  \        summary: Updates a user, require authentication and the role of
+  admin
 
   \        requestBody:
 
@@ -430,7 +253,8 @@ contents: "  openapi : 3.0.3
 
   \          - tokens
 
-  \        summary: Clear invalid refresh tokens from db
+  \        summary: Clear invalid tokens, requires authentication and the role
+  of admin
 
   \        responses:
 
@@ -606,15 +430,276 @@ contents: "  openapi : 3.0.3
 
   \     \ 
 
-  \     \ 
+  \    /users-product:
+
+  \      post:
+
+  \        tags:
+
+  \          - users-products
+
+  \        summary: Creates a new product, require authentication
+
+  \        requestBody:
+
+  \          description: data needed to create a new product
+
+  \          required: true
+
+  \          content:
+
+  \            application/json:
+
+  \             schema:
+
+  \               $ref: \"#/components/schemas/create-product\"
+
+  \              \ 
+
+  \        responses:
+
+  \          \"201\":
+
+  \            description: creates a product and then returns it, require
+  authentication
+
+  \            content:
+
+  \              application/json:
+
+  \                schema:
+
+  \                  $ref: \"#/components/schemas/product\"
 
   \                 \ 
+
+  \          \"409\":
+
+  \            description: a product with that name is already created
+
+  \            content:
+
+  \              application/json:
+
+  \                schema:
+
+  \                  $ref: \"#/components/schemas/error-message\"
+
+  \                 \ 
+
+  \      get:
+
+  \        tags:
+
+  \          - users-products
+
+  \        summary: Returns all products of the corresponding user, require
+  authentication
+
+  \        responses:
+
+  \          \"202\":
+
+  \            description: returns an array of products
+
+  \            content:
+
+  \              application/json:
+
+  \                schema:
+
+  \                  $ref: \"#/components/schemas/product\"
+
+  \                 \ 
+
+  \          \"400\":
+
+  \            description: eroare cand s-a incercat sa se returneze produsele
+
+  \            content:
+
+  \              application/json:
+
+  \                schema:
+
+  \                  $ref: \"#/components/schemas/error-message\"
+
+  \                 \ 
+
+  \    /users-products/{id}:
+
+  \      delete:
+
+  \        tags:\ 
+
+  \          - users-products
+
+  \        summary: Deletes a product of a user, requires authentication
+
+  \        operationId: getUsersProductById
+
+  \        parameters:\ 
+
+  \          - name: id
+
+  \            in: path
+
+  \            description: Users Product ID
+
+  \            required: true
+
+  \            schema:
+
+  \              type: string
+
+  \        responses:
+
+  \          \"202\":
+
+  \            description: deletes a product
+
+  \            content:\ 
+
+  \              application/json:
+
+  \                schema:
+
+  \                  $ref: \"#/components/schemas/alert-message\"
+
+  \                 \ 
+
+  \          \"400\":
+
+  \            description: return an error message \ 
+
+  \            content:
+
+  \              application/json:
+
+  \                schema:
+
+  \                  $ref: \"#/components/schemas/error-message\"
+
+  \                 \ 
+
+  \                 \ 
+
+  \      get:
+
+  \        tags:\ 
+
+  \          - users-products
+
+  \        summary: Deletes a product of a user, requires authentication
+
+  \        parameters:\ 
+
+  \          - name: id
+
+  \            in: path
+
+  \            description: Users Product ID
+
+  \            required: true
+
+  \            schema:
+
+  \              type: string
+
+  \        responses:
+
+  \          \"202\":
+
+  \            description: returns an array with the product found
+
+  \            content:\ 
+
+  \              application/json:
+
+  \                schema:
+
+  \                  $ref: \"#/components/schemas/product\"
+
+  \                 \ 
+
+  \          \"404\":
+
+  \            description: return an error message \ 
+
+  \            content:
+
+  \              application/json:
+
+  \                schema:
+
+  \                  $ref: \"#/components/schemas/error-message\"
+
+  \                 \ 
+
+  \                 \ 
+
+  \      put:
+
+  \        tags:\ 
+
+  \          - users-products
+
+  \        summary: Updates a product for a user, require authentication
+
+  \        parameters:\ 
+
+  \          - name: id
+
+  \            in: path
+
+  \            description: Users Product ID
+
+  \            required: true
+
+  \            schema:
+
+  \              type: string
+
+  \        responses:
+
+  \          \"202\":
+
+  \            description: updates a product and then returns it
+
+  \            content:\ 
+
+  \              application/json:
+
+  \                schema:
+
+  \                  $ref: \"#/components/schemas/product\"
+
+
+  \          \"400\":
+
+  \            description: return an error message \ 
+
+  \            content:
+
+  \              application/json:
+
+  \                schema:
+
+  \                  $ref: \"#/components/schemas/error-message\"
 
   \           \ 
 
+  \          \ 
+
+  \          \ 
+
+  \          \ 
+
+  \          \ 
+
   \                 \ 
 
-  \     \ 
+  \   \ 
 
   \                 \ 
 
@@ -668,6 +753,8 @@ contents: "  openapi : 3.0.3
   \          - hot
 
   \          - storage
+
+  \          - ownerId
 
   \        properties:
 
@@ -748,6 +835,12 @@ contents: "  openapi : 3.0.3
   \            type: string
 
   \            description: where is the product stored
+
+  \          ownerId:
+
+  \            type: number
+
+  \            description: id of the owner of it
 
   \           \ 
 
