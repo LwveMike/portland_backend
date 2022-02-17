@@ -24,4 +24,6 @@ export default class Product {
   hot: boolean;
 
   storage: string;
+
+  ownerId: number;
 }

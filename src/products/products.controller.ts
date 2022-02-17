@@ -1,7 +1,7 @@
 import { Request, Response, Router } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import {
-  getAllProducts, createProduct, getOneProductById, deleteOneProduct, updateOneProduct,
+  getAllProducts, getOneProductById,
 } from './products.service';
 
 const productsController = Router();
@@ -39,52 +39,54 @@ productsController.get('/:id', async (req: Request, res: Response): Promise<void
   }
 });
 
-productsController.post('/', async (req: Request, res: Response): Promise<void> => {
-  try {
-    const product = await createProduct(req.body);
-    res.status(StatusCodes.CREATED).json(product);
-  } catch (error) {
-    res.status(StatusCodes.NOT_ACCEPTABLE).json({
-      message: "The product couldn't be added to the DB.",
-      error,
-    });
-  }
-});
+// Moved
 
-productsController.delete('/:id', async (req: Request, res: Response): Promise<void> => {
-  const { id } = req.params;
+// productsController.post('/', async (req: Request, res: Response): Promise<void> => {
+//   try {
+//     const product = await createProduct(req.body);
+//     res.status(StatusCodes.CREATED).json(product);
+//   } catch (error) {
+//     res.status(StatusCodes.NOT_ACCEPTABLE).json({
+//       message: "The product couldn't be added to the DB.",
+//       error,
+//     });
+//   }
+// });
 
-  try {
-    await deleteOneProduct(id);
-    res.status(StatusCodes.ACCEPTED).json({
-      message: `The product with id ${id} was deleted successfuly.`,
-    });
-  } catch (error) {
-    res.status(StatusCodes.BAD_REQUEST).json({
-      message: 'Error while trying to delete product from DB.',
-      error,
-    });
-  }
-});
+// productsController.delete('/:id', async (req: Request, res: Response): Promise<void> => {
+//   const { id } = req.params;
 
-productsController.put('/:id', async (req: Request, res: Response): Promise<void> => {
-  const { id } = req.params;
+//   try {
+//     await deleteOneProduct(id);
+//     res.status(StatusCodes.ACCEPTED).json({
+//       message: `The product with id ${id} was deleted successfuly.`,
+//     });
+//   } catch (error) {
+//     res.status(StatusCodes.BAD_REQUEST).json({
+//       message: 'Error while trying to delete product from DB.',
+//       error,
+//     });
+//   }
+// });
 
-  try {
-    const product = await updateOneProduct(id, req.body);
+// productsController.put('/:id', async (req: Request, res: Response): Promise<void> => {
+//   const { id } = req.params;
 
-    if (product) res.status(StatusCodes.OK).json(product);
-    else {
-      res.status(StatusCodes.BAD_REQUEST).json({
-        message: `The product with id ${id} couldn't be updated.`,
-      });
-    }
-  } catch (error) {
-    res.status(StatusCodes.BAD_REQUEST).json({
-      message: `Error while trying to update product with id ${id}.`,
-      error,
-    });
-  }
-});
+//   try {
+//     const product = await updateOneProduct(id, req.body);
+
+//     if (product) res.status(StatusCodes.OK).json(product);
+//     else {
+//       res.status(StatusCodes.BAD_REQUEST).json({
+//         message: `The product with id ${id} couldn't be updated.`,
+//       });
+//     }
+//   } catch (error) {
+//     res.status(StatusCodes.BAD_REQUEST).json({
+//       message: `Error while trying to update product with id ${id}.`,
+//       error,
+//     });
+//   }
+// });
 
 export default productsController;

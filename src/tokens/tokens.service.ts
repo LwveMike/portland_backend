@@ -111,6 +111,7 @@ const getUserDataFromToken = async (jwtToken: string): Promise<SendUserDto | Err
       id: user.id,
       username: user.username,
       avatar: user.avatar,
+      role: user.role,
     };
 
     return sendUserDto;

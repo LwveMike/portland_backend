@@ -11,6 +11,7 @@ import { tokensController } from './tokens/tokens.module';
 import Logger from './winston.config';
 import checkTokens from './middleware/checkToken';
 import usersProductsController from './users.products/users.products.controller';
+import checkRole from './middleware/checkRole';
 
 require('dotenv').config();
 
@@ -25,11 +26,11 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(morgan('tiny'));
 
-app.use('/products', checkTokens, productsController);
-app.use('/users', usersController);
+app.use('/products', productsController);
+app.use('/users', checkTokens, checkRole, usersController);
 app.use('/auth', authController);
-app.use('/tokens', tokensController);
-app.use('/users/products', checkTokens, usersProductsController);
+app.use('/tokens', checkTokens, checkRole, tokensController);
+app.use('/users-products', checkTokens, usersProductsController);
 
 app.listen(process.env.PORT, () => {
   Logger.log({ level: 'info', message: `Express server started on port ${process.env.PORT}` });
