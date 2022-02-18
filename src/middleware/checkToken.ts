@@ -13,6 +13,11 @@ const checkToken = async (req: Request, res: Response, next: NextFunction)
       const user = await getUserDataFromToken(oldJwtToken);
       req.body.user = user;
       next();
+    } else {
+      res.json({
+        message: 'Refresh tokens is invalid.',
+        fullfilled: false,
+      });
     }
   } else if (refreshToken) {
     const jwtToken = await getAJwtToken(refreshToken);
@@ -28,11 +33,13 @@ const checkToken = async (req: Request, res: Response, next: NextFunction)
     } else {
       res.json({
         message: 'Refresh tokens is invalid.',
+        fullfilled: false,
       });
     }
   } else {
     res.json({
       message: 'You are not logged in.',
+      fullfilled: false,
     });
   }
 };

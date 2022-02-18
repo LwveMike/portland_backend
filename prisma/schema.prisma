@@ -30,7 +30,7 @@ model User {
   id       Int    @id @default(autoincrement())
   username String @unique
   password String
-  avatar   String @default("https://www.der-windows-papst.de/wp-content/uploads/2019/03/Windows-Change-Default-Avatar-448x400.png")
+  avatar   String @default("https://cdn.pixabay.com/photo/2016/12/13/05/15/puppy-1903313__340.jpg")
   role     Roles
 
   products Product[]

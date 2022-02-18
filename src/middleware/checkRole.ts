@@ -6,6 +6,7 @@ const checkRole = async (req: Request, res: Response, next: NextFunction)
   else {
     res.json({
       message: 'You are not admin',
+      fullfilled: false,
     });
   }
 };

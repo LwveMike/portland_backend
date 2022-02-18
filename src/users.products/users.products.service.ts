@@ -68,13 +68,17 @@ const deleteOneUsersProductById = async (ownerId: number, productId: string)
     if (product) {
       product = product as Product;
       if (product.ownerId === ownerId) {
-        await prisma.product.delete({
-          where: {
-            id,
-          },
-        });
+        try {
+          await prisma.product.delete({
+            where: {
+              id,
+            },
+          });
 
-        return true;
+          return true;
+        } catch (error) {
+          return false;
+        }
       }
 
       return false;
