@@ -21,6 +21,9 @@ model Product {
   discount    Int?    @default(0)
   hot         Boolean
   storage     String
+  type        String  @default("simple")
+
+  createdAt DateTime @default(now())
 
   owner   User @relation(fields: [ownerId], references: [id])
   ownerId Int

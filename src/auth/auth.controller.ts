@@ -8,9 +8,12 @@ const authController = Router();
 authController.post('/register', async (req: Request, res: Response): Promise<void> => {
   try {
     const message = await register(req.body, res);
-    res.status(StatusCodes.CREATED).json(message);
+    res.status(StatusCodes.CREATED).json({
+      fullfilled: true,
+      message});
   } catch (error) {
     res.status(StatusCodes.CONFLICT).json({
+      fullfilled: false,
       message: "Error User couldn't be registered.",
       error,
     });
@@ -20,9 +23,12 @@ authController.post('/register', async (req: Request, res: Response): Promise<vo
 authController.post('/login', async (req: Request, res: Response) => {
   try {
     const message = await login(req.body, res);
-    res.status(StatusCodes.OK).json(message);
+    res.status(StatusCodes.OK).json({
+      fullfilled: true,
+      message});
   } catch (error) {
     res.status(StatusCodes.CONFLICT).json({
+      fullfilled: false,
       message: "Error User couldn't login",
       error,
     });

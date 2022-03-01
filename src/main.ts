@@ -25,12 +25,12 @@ const app = express();
 const http = createServer(app);
 const io = new Server(http, {
   cors: {
-    origin: 'http://localhost:3001',
+    origin: 'http://localhost:8080',
   },
 });
 
 app.use(cors({
-  origin: 'http://localhost:3001',
+  origin: 'http://localhost:8080',
   credentials: true,
 }));
 
@@ -63,7 +63,7 @@ io.on(SocketEvents.CONNECTION, (socket) => {
 });
 
 http.listen(process.env.PORT, () => {
-  Logger.log({ level: 'info', message: `htto listens to ${process.env.PORT}` });
+  Logger.log({ level: 'info', message: `http listens to ${process.env.PORT}` });
 });
 
 export default io;
