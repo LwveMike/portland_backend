@@ -32,16 +32,21 @@ const login = async (loginUserDto: LoginUserDto, response: Response)
       response.cookie('refreshtoken', refreshToken.refresh_token, { expires: refreshMaxAge, httpOnly: true, sameSite: 'strict' });
 
       return {
-        id: user.id,
+        user: {
+          id: user.id,
         username: user.username,
         avatar: user.avatar,
+        },
+        fullfilled: true,
       };
     }
     return {
+      fullfilled: false,
       message: "The passwords didn't match",
     };
   }
   return {
+    fullfilled: false,
     message: `There is no user with username ${loginUserDto.username}`,
   };
 };

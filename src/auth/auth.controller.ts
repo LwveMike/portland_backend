@@ -23,13 +23,10 @@ authController.post('/register', async (req: Request, res: Response): Promise<vo
 authController.post('/login', async (req: Request, res: Response) => {
   try {
     const message = await login(req.body, res);
-    res.status(StatusCodes.OK).json({
-      fullfilled: true,
-      message});
+    res.status(StatusCodes.OK).json(message);
   } catch (error) {
     res.status(StatusCodes.CONFLICT).json({
       fullfilled: false,
-      message: "Error User couldn't login",
       error,
     });
   }
@@ -51,7 +48,9 @@ authController.delete('/logout', async (req: Request, res: Response) => {
 
 authController.get('/get-user-data', checkToken, async (req: Request, res: Response)
 : Promise<void> => {
-  res.json(req.body.user);
+  res.json({
+    fullfilled: true,
+    user: req.body.user});
 });
 
 export default authController;
